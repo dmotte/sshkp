@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+
+import argparse
+import getpass
+import os
+
+from pykeepass import PyKeePass
+
+
+def main():
+    parser = argparse.ArgumentParser(description='''
+        Executes an SSH command with a password from a KeePass database.
+        This script supports two environment variables: KP_FILENAME (mandatory)
+        and KP_PASSWORD (optional)
+    ''')
+
+    parser.add_argument('entryname', metavar='ENTRYNAME', type=str,
+                        help='KeePass entry name')
+    parser.add_argument('command', metavar='COMMAND', nargs=argparse.REMAINDER,
+                        help='''SSH command. If the command equals to ".print",
+                        then it just prints the password without executing
+                        anything else''')
+
+    args = vars(parser.parse_args())
+
+    ############################################################################
+
+    entryname = args['entryname']
+    command = args['command']
+
+    kp_filename = os.getenv('KP_FILENAME')
+    kp_password = os.getenv('KP_PASSWORD')
+
+    if kp_filename is None:
+        raise Exception('KP_FILENAME environment variable not defined')
+    if kp_password is None:
+        kp_password = getpass.getpass('KeePass password: ')
+
+    ############################################################################
+
+    kp = PyKeePass(kp_filename, kp_password)
+
+    entry = kp.find_entries_by_title(entryname, first=True)
+
+    if entry is None:
+        raise Exception('KeePass entry not found')
+
+    ############################################################################
+
+    if len(command) >= 1 and command[0] == '.print':
+        print(entry.password)
+        return
+
+    os.execve(
+        '/usr/bin/sshpass',
+        ['sshpass', '-e', 'ssh', entryname] + command,
+        {'SSHPASS': entry.password},
+    )
+
+
+if __name__ == '__main__':
+    main()
