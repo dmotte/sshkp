@@ -51,10 +51,11 @@ def main():
         print(entry.password)
         return
 
-    os.execve(
+    os.environ['SSHPASS'] = entry.password
+
+    os.execv(
         '/usr/bin/sshpass',
         ['sshpass', '-e', 'ssh', entryname] + command,
-        {'SSHPASS': entry.password},
     )
 
 
