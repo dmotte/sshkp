@@ -3,11 +3,15 @@
 import argparse
 import getpass
 import os
+import sys
 
 from pykeepass import PyKeePass
 
 
-def main():
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+
     parser = argparse.ArgumentParser(description='''
         Executes an SSH command with a password from a KeePass database.
         This script supports two environment variables: KP_FILENAME (mandatory)
@@ -21,7 +25,7 @@ def main():
                         then it just prints the password without executing
                         anything else''')
 
-    args = vars(parser.parse_args())
+    args = vars(parser.parse_args(argv[1:]))
 
     ############################################################################
 
@@ -49,7 +53,7 @@ def main():
 
     if len(command) >= 1 and command[0] == '.print':
         print(entry.password)
-        return
+        return 0
 
     os.environ['SSHPASS'] = entry.password
 
@@ -57,7 +61,3 @@ def main():
         '/usr/bin/sshpass',
         ['sshpass', '-e', 'ssh', entryname] + command,
     )
-
-
-if __name__ == '__main__':
-    main()
