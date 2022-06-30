@@ -27,16 +27,17 @@ def main(argv=None):
 
     args = vars(parser.parse_args(argv[1:]))
 
-    ############################################################################
-
     entryname = args['entryname']
     command = args['command']
+
+    ############################################################################
 
     kp_filename = os.getenv('KP_FILENAME')
     kp_password = os.getenv('KP_PASSWORD')
 
     if kp_filename is None:
-        raise Exception('KP_FILENAME environment variable not defined')
+        print('KP_FILENAME environment variable not defined', file=sys.stderr)
+        return 1
     if kp_password is None:
         kp_password = getpass.getpass('KeePass password: ')
 
@@ -47,7 +48,8 @@ def main(argv=None):
     entry = kp.find_entries_by_title(entryname, first=True)
 
     if entry is None:
-        raise Exception('KeePass entry not found')
+        print('KeePass entry not found', file=sys.stderr)
+        return 1
 
     ############################################################################
 
