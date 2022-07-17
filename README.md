@@ -32,13 +32,7 @@ If you don't set the `KP_PASSWORD` environment variable before calling the scrip
 
 ## Development
 
-If you want to contribute to this project, the first thing you have to do is to **clone this repository** on your local machine:
-
-```bash
-git clone https://github.com/dmotte/sshkp.git
-```
-
-Then you can install the package in **editable** mode:
+If you want to contribute to this project, you can install the package in **editable** mode:
 
 ```bash
 pip3 install -e . --user
