@@ -1,6 +1,5 @@
 # sshkp
 
-[![GitHub release workflow](https://img.shields.io/github/workflow/status/dmotte/sshkp/release?logo=github&label=release&style=flat-square)](https://github.com/dmotte/sshkp/actions)
 [![PyPI](https://img.shields.io/pypi/v/sshkp?logo=python&style=flat-square)](https://pypi.org/project/sshkp/)
 
 :snake: Script to execute an **SSH command** using a password from a **KeePass database**.
