@@ -12,18 +12,18 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
 
-    parser = argparse.ArgumentParser(description='''
-        Executes an SSH command with a password from a KeePass database.
-        This script supports two environment variables: KP_FILENAME (mandatory)
-        and KP_PASSWORD (optional)
-    ''')
+    parser = argparse.ArgumentParser(
+        description='Executes an SSH command with a password from a KeePass '
+        'database. This script supports two environment variables: KP_FILENAME '
+        '(mandatory) and KP_PASSWORD (optional)'
+    )
 
     parser.add_argument('entryname', metavar='ENTRYNAME', type=str,
                         help='KeePass entry name')
     parser.add_argument('command', metavar='COMMAND', nargs=argparse.REMAINDER,
-                        help='''SSH command. If the command equals to ".print",
-                        then it just prints the password without executing
-                        anything else''')
+                        help='SSH command. If the command equals to ".print", '
+                        'then it just prints the password without executing '
+                        'anything else')
 
     args = vars(parser.parse_args(argv[1:]))
 
