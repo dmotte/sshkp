@@ -20,7 +20,7 @@ pip3 install sshkp
 
 ```bash
 export KP_FILENAME="/path/to/my/keepass/database.kdbx"
-read -p "Password: " -s KP_PASSWORD && export KP_PASSWORD
+read -rsp "Password: " KP_PASSWORD && export KP_PASSWORD
 sshkp user@hostname ls -la  # executes a command
 sshkp user@hostname .print  # just prints the SSH password
 ```
